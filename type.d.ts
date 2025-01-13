@@ -1,5 +1,5 @@
-import { ReactNode } from "react"
+import { ReactNode } from "react";
 
-type children = {
-  children: ReactNode,
-}
+type childrenType = {
+  children: ReactNode;
+};

@@ -1,26 +1,31 @@
-import { children } from "@/type";
-import React, { createContext, useState } from "react";
+import { childrenType } from "@/type";
+import React, { createContext, useContext, useState } from "react";
 
-type message = {
+export type message = {
   role: string;
   content: string;
 };
 
 type msgContext = {
-  messages: Array<string> | any;
+  messages: message | any;
   setMessages: React.Dispatch<React.SetStateAction<message | undefined>>;
 };
 
-export const messageContext = createContext<msgContext>({
-  messages: "",
-  setMessages: () => {},
-});
+const MessageContext = createContext<msgContext | null>(null);
 
-export default function MessageContextProvider({ children }: children) {
+export default function MessageContextProvider({ children }: childrenType) {
   const [messages, setMessages] = useState<undefined | message>();
   return (
-    <messageContext.Provider value={{ messages, setMessages }}>
+    <MessageContext.Provider value={{ messages, setMessages }}>
       {children}
-    </messageContext.Provider>
+    </MessageContext.Provider>
   );
 }
+
+export const useMessageContext = () => {
+  const messageContext = useContext(MessageContext);
+  if (!messageContext) {
+    throw Error("context is not defined");
+  }
+  return messageContext;
+};

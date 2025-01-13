@@ -7,11 +7,14 @@ import {
 } from "@/components/ui/dialog";
 import Lookup from "@/data/Lookup";
 
-import React, { useContext } from "react";
+import React from "react";
 import { Button } from "../ui/button";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import { userContext } from "@/context/UserContext";
+import { useUserContext } from "@/context/UserContext";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { nanoid } from "nanoid";
 
 const SignInDialog = ({
   isOpen,
@@ -20,14 +23,25 @@ const SignInDialog = ({
   isOpen: boolean;
   closeDialog: () => void;
 }) => {
-  const { setUserDetail } = useContext(userContext);
+  const { setUserDetail } = useUserContext();
+  const CreateUser = useMutation(api.users.CreateUser);
   const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       const userInfo = await axios.get(
         "https://www.googleapis.com/oauth2/v3/userinfo",
-        { headers: { Authorization: `Bearer ${tokenResponse?.access_token}` } },
+        { headers: { Authorization: `Bearer ${tokenResponse?.access_token}` } }
       );
+      const user = userInfo?.data;
+      await CreateUser({
+        name: user.name,
+        picture: user.picture,
+        email: user.email,
+        uid: nanoid(),
+      });
       setUserDetail(userInfo?.data);
+      if (typeof window !== undefined) {
+        window.localStorage.setItem("user", JSON.stringify(user));
+      }
     },
     onError: (errResponse) => console.log(errResponse),
   });

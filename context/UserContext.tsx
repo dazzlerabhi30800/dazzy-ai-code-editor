@@ -1,21 +1,34 @@
-import { children } from "@/type";
-import { createContext, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
+import { childrenType } from "@/type";
+
+interface user {
+  name?: string;
+  email?: string;
+  uid?: string;
+  picture?: string;
+}
+
+type userState = user | null | undefined;
 
 type userContext = {
-  userDetail: Array<string> | any;
-  setUserDetail: React.Dispatch<React.SetStateAction<any>>;
+  userDetail: userState;
+  setUserDetail: React.Dispatch<React.SetStateAction<userState>>;
 };
+const UserContext = createContext<userContext | null>(null);
 
-export const userContext = createContext<userContext>({
-  userDetail: "",
-  setUserDetail: () => {},
-});
-
-export default function UserContextProvider({ children }: children) {
-  const [userDetail, setUserDetail] = useState();
+export default function UserContextProvider({ children }: childrenType) {
+  const [userDetail, setUserDetail] = useState<userState>();
   return (
-    <userContext.Provider value={{ userDetail, setUserDetail }}>
+    <UserContext.Provider value={{ userDetail, setUserDetail }}>
       {children}
-    </userContext.Provider>
+    </UserContext.Provider>
   );
 }
+
+export const useUserContext = () => {
+  const userInfoContext = useContext(UserContext);
+  if (!userInfoContext) {
+    throw Error("context is not defined");
+  }
+  return userInfoContext;
+};

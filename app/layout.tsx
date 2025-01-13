@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import ThemeProvider from "./provider";
 import Header from "@/components/custom/Header";
+import { ConvexClientProvider } from "./ConvexProvider";
+import ContextProvider from "./ContextProvider";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -23,15 +24,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${poppins.className}`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Header />
-          {children}
-        </ThemeProvider>
+        <ConvexClientProvider>
+          <ContextProvider>
+            <Header />
+            {children}
+          </ContextProvider>
+        </ConvexClientProvider>
       </body>
     </html>
   );

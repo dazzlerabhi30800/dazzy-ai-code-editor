@@ -1,16 +1,16 @@
 "use client";
-import { messageContext } from "@/context/MessageContext";
+import { useMessageContext } from "@/context/MessageContext";
 import Lookup from "@/data/Lookup";
 import { ArrowRight, Link } from "lucide-react";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "../ui/button";
-import { userContext } from "@/context/UserContext";
+import { useUserContext } from "@/context/UserContext";
 import SignInDialog from "./SignInDialog";
 
 const Hero = () => {
   const [userInput, setUserInput] = useState<string | undefined>();
-  const { messages, setMessages } = useContext(messageContext);
-  const { userDetail } = useContext(userContext);
+  const { messages, setMessages } = useMessageContext();
+  const { userDetail } = useUserContext();
   const [openDialog, setOpenDialog] = useState(false);
 
   const onGenerate = (input: string) => {
@@ -23,6 +23,7 @@ const Hero = () => {
       content: input,
     });
   };
+  console.log(messages);
 
   return (
     <div className="flex flex-col items-center mt-56 gap-2 w-full px-4 text-center">
