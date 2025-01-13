@@ -1,10 +1,29 @@
 "use client";
+import { messageContext } from "@/context/MessageContext";
 import Lookup from "@/data/Lookup";
 import { ArrowRight, Link } from "lucide-react";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { Button } from "../ui/button";
+import { userContext } from "@/context/UserContext";
+import SignInDialog from "./SignInDialog";
 
 const Hero = () => {
   const [userInput, setUserInput] = useState<string | undefined>();
+  const { messages, setMessages } = useContext(messageContext);
+  const { userDetail } = useContext(userContext);
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const onGenerate = (input: string) => {
+    if (!userDetail?.name) {
+      setOpenDialog(true);
+      return;
+    }
+    setMessages({
+      role: "user",
+      content: input,
+    });
+  };
+
   return (
     <div className="flex flex-col items-center mt-56 gap-2 w-full px-4 text-center">
       <h2 className="font-bold text-4xl text-white">{Lookup.HERO_HEADING}</h2>
@@ -18,7 +37,12 @@ const Hero = () => {
             className="bg-transparent outline-none w-full h-32 max-h-56 resize-none"
           />
           {userInput && (
-            <ArrowRight className="bg-blue-500 p-2 h-8 w-8 rounded-md" />
+            <Button
+              onClick={() => onGenerate(userInput)}
+              className="bg-blue-500 p-2 h-8 w-8 rounded-md text-white hover:bg-blue-400"
+            >
+              <ArrowRight />
+            </Button>
           )}
         </div>
         <div>
@@ -27,14 +51,20 @@ const Hero = () => {
       </div>
       <div className="flex flex-wrap max-w-3xl w-full gap-2 justify-center">
         {Lookup.SUGGSTIONS?.map((suggestion, index) => (
-          <h2
-            className="border border-gray-500 text-gray-500 hover:text-white p-2 text-sm rounded-xl cursor-pointer"
+          <Button
+            variant="ghost"
+            className="border border-gray-500 text-gray-500 hover:text-white p-2 text-sm rounded-xl"
+            onClick={() => onGenerate(suggestion)}
             key={index}
           >
-            {suggestion}
-          </h2>
+            <h2>{suggestion}</h2>
+          </Button>
         ))}
       </div>
+      <SignInDialog
+        isOpen={openDialog}
+        closeDialog={() => setOpenDialog(false)}
+      />
     </div>
   );
 };

@@ -5,7 +5,7 @@ export default {
   HERO_HEADING: 'What do you want to build?',
   HERO_DESC: 'Prompt, run, edit, and deploy full-stack web apps.',
   INPUT_PLACEHOLDER: 'What you want to build?',
-  SIGNIN_HEADING: 'Continue With Bolt.New 2.0',
+  SIGNIN_HEADING: 'Continue With Dazzy 2.0',
   SIGNIN_SUBHEADING: 'To use Bolt you must log into an existing account or create one.',
   SIGNIn_AGREEMENT_TEXT: 'By using Bolt, you agree to the collection of usage data for analytics.',
 
