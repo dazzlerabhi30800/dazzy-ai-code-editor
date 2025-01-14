@@ -10,7 +10,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import axios from "axios";
 import Prompt from "@/data/Prompt";
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown from "react-markdown";
 
 const ChatView = () => {
   const { id } = useParams();
@@ -36,13 +36,13 @@ const ChatView = () => {
     const result = await axios.post("/api/ai-chat", {
       prompt: aiPrompt,
     });
-    const aiResult = result.data.result;
-    setMessages((prev: arrayMsg) => [
-      ...prev,
-      { role: "ai", content: result.data.result },
-    ]);
+    const aiResponse = {
+      role: "ai",
+      content: result.data.result,
+    };
+    setMessages((prev: arrayMsg) => [...prev, aiResponse]);
     await updateWorkspace({
-      messages: [...messages, aiResult],
+      messages: [...messages, aiResponse],
       workspaceId: id as any,
     });
     setLoading(false);
@@ -58,7 +58,7 @@ const ChatView = () => {
         content: input,
       },
     ]);
-    setUserInput('');
+    setUserInput("");
   };
 
   useEffect(() => {
@@ -92,7 +92,9 @@ const ChatView = () => {
                 height={35}
               />
             )}
-            <ReactMarkdown className="flex flex-col">{message.content}</ReactMarkdown>
+            <ReactMarkdown className="flex flex-col">
+              {message.content}
+            </ReactMarkdown>
           </div>
         ))}
         {loading && (
@@ -103,7 +105,7 @@ const ChatView = () => {
         )}
       </div>
       {/* NOTE: Input Section */}
-      <div className="border p-5 rounded-xl w-full my-8 bg-customBackground">
+      <div className="border p-5 rounded-xl w-full bg-customBackground">
         <div className="flex gap-2">
           <textarea
             value={userInput}

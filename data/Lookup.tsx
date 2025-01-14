@@ -27,7 +27,7 @@ export default {
     },
     '/App.css': {
       code: `
-            @tailwind base;
+@tailwind base;
 @tailwind components;
 @tailwind utilities;`
     },
