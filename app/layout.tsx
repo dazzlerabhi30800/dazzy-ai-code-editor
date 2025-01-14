@@ -22,8 +22,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${poppins.className}`}>
+    <html lang="en">
+      <body className={`${poppins.className}`} suppressHydrationWarning={true}>
         <ConvexClientProvider>
           <ContextProvider>
             <Header />

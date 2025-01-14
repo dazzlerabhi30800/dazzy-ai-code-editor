@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import scrollbarHide from "tailwind-scrollbar-hide";
 
 export default {
   darkMode: ["class"],
@@ -14,6 +15,7 @@ export default {
         subheading: "#d1d5db",
         customBackground: "#151515",
         blue2: "#2ba6ff",
+        chatBg: "#272727",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
@@ -62,5 +64,6 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  // plugins: [require("tailwindcss-animate"), require("tailwind-scrollbar-hide")],
+  plugins: [require("tailwindcss-animate"), scrollbarHide],
 } satisfies Config;

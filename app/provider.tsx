@@ -13,17 +13,17 @@ export default function ThemeProvider({
   const { setUserDetail } = useUserContext();
 
   const isAuthenticated = async () => {
-    if (typeof window !== undefined) {
-      const user = JSON.parse(localStorage.getItem("user") || "{}");
-      if (user.email) {
-        const result = await convex.query(api.users.getUser, {
-          email: user?.email,
-        });
-        setUserDetail(result);
-        return;
-      }
+    // if (typeof window !== undefined) {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    if (user.email) {
+      const result = await convex.query(api.users.getUser, {
+        email: user?.email,
+      });
+      setUserDetail(result);
       return;
     }
+    return;
+    // }
   };
   React.useEffect(() => {
     isAuthenticated();

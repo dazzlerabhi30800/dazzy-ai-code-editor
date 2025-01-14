@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 
 const Hero = () => {
   const [userInput, setUserInput] = useState<string | undefined>();
-  const { messages, setMessages } = useMessageContext();
+  const { setMessages } = useMessageContext();
   const { userDetail } = useUserContext();
   const [openDialog, setOpenDialog] = useState(false);
   const saveMessage = useMutation(api.workspace.CreateWorkspace);

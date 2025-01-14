@@ -1,14 +1,16 @@
 import { childrenType } from "@/type";
 import React, { createContext, useContext, useState } from "react";
 
+
 export type message = {
   role: string;
   content: string;
 };
+export type arrayMsg = Array<message>;
 
 type msgContext = {
   messages: message | any;
-  setMessages: React.Dispatch<React.SetStateAction<message | undefined>>;
+  setMessages: React.Dispatch<React.SetStateAction<message | undefined | any>>;
 };
 
 const MessageContext = createContext<msgContext | null>(null);
