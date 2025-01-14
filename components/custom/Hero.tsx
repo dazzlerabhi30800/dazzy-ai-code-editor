@@ -6,24 +6,34 @@ import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { useUserContext } from "@/context/UserContext";
 import SignInDialog from "./SignInDialog";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { useRouter } from "next/navigation";
 
 const Hero = () => {
   const [userInput, setUserInput] = useState<string | undefined>();
   const { messages, setMessages } = useMessageContext();
   const { userDetail } = useUserContext();
   const [openDialog, setOpenDialog] = useState(false);
+  const saveMessage = useMutation(api.workspace.CreateWorkspace);
+  const router = useRouter();
 
-  const onGenerate = (input: string) => {
+  const onGenerate = async (input: string) => {
     if (!userDetail?.name) {
       setOpenDialog(true);
       return;
     }
-    setMessages({
+    const msg = {
       role: "user",
       content: input,
+    };
+    setMessages(msg);
+    const workspaceId = await saveMessage({
+      messages: [msg],
+      user: userDetail?._id as any,
     });
+    router.push(`/workspace/${workspaceId}`);
   };
-  console.log(messages);
 
   return (
     <div className="flex flex-col items-center mt-56 gap-2 w-full px-4 text-center">

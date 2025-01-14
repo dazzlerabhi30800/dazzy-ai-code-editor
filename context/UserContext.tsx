@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState } from "react";
 import { childrenType } from "@/type";
 
 interface user {
+  _id: string;
   name?: string;
   email?: string;
   uid?: string;

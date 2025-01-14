@@ -8,18 +8,21 @@ import { api } from "@/convex/_generated/api";
 
 export default function ThemeProvider({
   children,
-  ...props
 }: React.ComponentProps<typeof NextThemesProvider>) {
   const convex = useConvex();
-  const { setUserDetail, userDetail } = useUserContext();
+  const { setUserDetail } = useUserContext();
 
   const isAuthenticated = async () => {
     if (typeof window !== undefined) {
       const user = JSON.parse(localStorage.getItem("user") || "{}");
-      const result = await convex.query(api.users.getUser, {
-        email: user?.email,
-      });
-      setUserDetail(result);
+      if (user.email) {
+        const result = await convex.query(api.users.getUser, {
+          email: user?.email,
+        });
+        setUserDetail(result);
+        return;
+      }
+      return;
     }
   };
   React.useEffect(() => {
