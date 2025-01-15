@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SandpackProvider,
   SandpackCodeEditor,
@@ -9,8 +9,19 @@ import {
 } from "@codesandbox/sandpack-react";
 import { Button } from "../ui/button";
 import Lookup from "@/data/Lookup";
+import Prompt from "@/data/Prompt";
+import { useMessageContext } from "@/context/MessageContext";
+import axios from "axios";
+import { useConvex, useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { useParams } from "next/navigation";
+import { Loader2Icon } from "lucide-react";
 
 const CodeView = () => {
+  const { messages } = useMessageContext();
+  const { id } = useParams();
+  const updateFiles = useMutation(api.workspace.updateFiles);
+  const convex = useConvex();
   const [activeTab, setActiveTab] = useState<string>("code");
   const tabStyle = {
     height: "78vh",
@@ -20,6 +31,49 @@ const CodeView = () => {
     width: "35%",
   });
   const [files, setFiles] = useState(Lookup.DEFAULT_FILE);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (messages?.length > 0) {
+      const role = messages[messages.length - 1].role;
+      if (role === "user") {
+        generateAiCode();
+      }
+    }
+  }, [messages]);
+
+  //NOTE: get current workspace files
+  useEffect(() => {
+    id && getCurrentFiles();
+  }, [id]);
+
+  // NOTE: get workspace data to set files
+  const getCurrentFiles = async () => {
+    setLoading(true);
+    const result = await convex.query(api.workspace.getWorkspace, {
+      workspaceId: id as any,
+    });
+    const mergedFiles = { ...Lookup.DEFAULT_FILE, ...result?.fileData };
+    setFiles(mergedFiles);
+    setLoading(false);
+  };
+
+  const generateAiCode = async () => {
+    setLoading(true);
+    const codePrompt =
+      messages[messages?.length - 1].content + Prompt.CODE_GEN_PROMPT;
+    const result = await axios.post("/api/ai-code", {
+      prompt: codePrompt,
+    });
+    const data = result.data;
+    const mergedFiles = { ...Lookup.DEFAULT_FILE, ...data?.files };
+    setFiles(mergedFiles);
+    await updateFiles({
+      workspaceId: id as any,
+      files: data.files,
+    });
+    setLoading(false);
+  };
 
   const handleStatusChange = (status: string) => {
     const button = document.getElementById(status);
@@ -33,11 +87,9 @@ const CodeView = () => {
       width: dimensions.width + "px",
     });
     setActiveTab(status);
-    // const rect = button.getBoundingClientRect();
-    // console.log(status);
   };
   return (
-    <div>
+    <div className="relative">
       <div className="border-b border-gray-500 bg-customBackground p-2">
         <div className="flex flex-wrap gap-2 items-center w-fit bg-black rounded-3xl py-2 px-3 border border-gray-700 relative">
           <Button
@@ -86,6 +138,12 @@ const CodeView = () => {
           )}
         </SandpackLayout>
       </SandpackProvider>
+      {loading && (
+        <div className="absolute w-full h-full p-10 bg-gray-800/80 top-0 left-0 flex items-center justify-center">
+          <Loader2Icon className="w-10 h-10 animate-spin" />
+          <h2>Generating Your Code...</h2>
+        </div>
+      )}
     </div>
   );
 };

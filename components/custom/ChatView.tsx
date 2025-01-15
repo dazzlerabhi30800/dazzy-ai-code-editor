@@ -6,7 +6,7 @@ import { useConvex, useMutation } from "convex/react";
 import { ArrowRight, Link, Loader2Icon } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import axios from "axios";
 import Prompt from "@/data/Prompt";
@@ -20,13 +20,16 @@ const ChatView = () => {
   const { userDetail } = useUserContext();
   const [userInput, setUserInput] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const chatRef = useRef<HTMLDivElement | null>(null);
 
   // NOTE: get data using workspace id
   const getWorkspaceData = async (id: string) => {
+    setLoading(true);
     const result = await convex.query(api.workspace.getWorkspace, {
       workspaceId: id as any,
     });
     setMessages(result?.messages);
+    setLoading(false);
   };
 
   // NOTE: get data from prompt
@@ -38,7 +41,7 @@ const ChatView = () => {
     });
     const aiResponse = {
       role: "ai",
-      content: result.data.result,
+      content: result?.data?.result,
     };
     setMessages((prev: arrayMsg) => [...prev, aiResponse]);
     await updateWorkspace({
@@ -66,6 +69,9 @@ const ChatView = () => {
   }, []);
 
   useEffect(() => {
+    chatRef?.current?.scrollIntoView({
+      behavior: "smooth",
+    });
     if (messages?.length > 0) {
       const role = messages[messages.length - 1].role;
       if (role === "user") {
@@ -81,6 +87,7 @@ const ChatView = () => {
         {messages?.map((message: message, index: number) => (
           <div
             key={index}
+            ref={chatRef}
             className="flex items-center gap-2 bg-chatBg p-3 rounded-lg mb-2 text-sm leading-6"
           >
             {message.role === "user" && (
