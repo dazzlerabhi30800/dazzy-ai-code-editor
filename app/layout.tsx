@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/custom/Header";
 import { ConvexClientProvider } from "./ConvexProvider";
 import ContextProvider from "./ContextProvider";
 
@@ -25,10 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${poppins.className}`} suppressHydrationWarning={true}>
         <ConvexClientProvider>
-          <ContextProvider>
-            <Header />
-            {children}
-          </ContextProvider>
+          <ContextProvider>{children}</ContextProvider>
         </ConvexClientProvider>
       </body>
     </html>

@@ -5,6 +5,9 @@ import { useUserContext } from "@/context/UserContext";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useConvex } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/custom/AppSidebar";
+import Header from "@/components/custom/Header";
 
 export default function ThemeProvider({
   children,
@@ -36,7 +39,11 @@ export default function ThemeProvider({
         enableSystem
         disableTransitionOnChange
       >
-        {children}
+        <Header />
+        <SidebarProvider defaultOpen={true}>
+          <AppSidebar />
+          {children}
+        </SidebarProvider>
       </NextThemesProvider>
     </GoogleOAuthProvider>
   );
