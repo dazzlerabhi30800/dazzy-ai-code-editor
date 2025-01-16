@@ -7,6 +7,7 @@ interface user {
   email?: string;
   uid?: string;
   picture?: string;
+  token: number;
 }
 
 type userState = user | null | undefined;

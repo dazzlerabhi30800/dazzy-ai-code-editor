@@ -11,11 +11,13 @@ import { Button } from "../ui/button";
 import axios from "axios";
 import Prompt from "@/data/Prompt";
 import ReactMarkdown from "react-markdown";
+import { countToken } from "@/configs/InputCountToken";
 
 const ChatView = () => {
   const { id } = useParams();
   const convex = useConvex();
   const updateWorkspace = useMutation(api.workspace.updateWorkspace);
+  const updateToken = useMutation(api.users.updateToken);
   const { messages, setMessages } = useMessageContext();
   const { userDetail } = useUserContext();
   const [userInput, setUserInput] = useState<string>("");
@@ -34,6 +36,7 @@ const ChatView = () => {
 
   // NOTE: get data from prompt
   const getApiResponse = async () => {
+    console.log("hello");
     setLoading(true);
     const aiPrompt = JSON.stringify(messages) + Prompt.CHAT_PROMPT;
     const result = await axios.post("/api/ai-chat", {
@@ -44,9 +47,16 @@ const ChatView = () => {
       content: result?.data?.result,
     };
     setMessages((prev: arrayMsg) => [...prev, aiResponse]);
+    console.log(messages);
     await updateWorkspace({
       messages: [...messages, aiResponse],
       workspaceId: id as any,
+    });
+    const tokenRemaining =
+      Number(userDetail?.token) - Number(countToken(JSON.stringify(aiPrompt)));
+    await updateToken({
+      userId: userDetail?._id as any,
+      token: tokenRemaining,
     });
     setLoading(false);
   };
@@ -65,8 +75,8 @@ const ChatView = () => {
   };
 
   useEffect(() => {
-    id && getWorkspaceData(id as string);
-  }, []);
+    id && userDetail && getWorkspaceData(id as string);
+  }, [userDetail]);
 
   useEffect(() => {
     chatRef?.current?.scrollIntoView({
@@ -75,7 +85,7 @@ const ChatView = () => {
     if (messages?.length > 0) {
       const role = messages[messages.length - 1].role;
       if (role === "user") {
-        getApiResponse();
+        userDetail && getApiResponse();
       }
     }
   }, [messages]);

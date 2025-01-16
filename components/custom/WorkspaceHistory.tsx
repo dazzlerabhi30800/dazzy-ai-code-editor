@@ -1,3 +1,4 @@
+import { useMessageContext } from "@/context/MessageContext";
 import { useUserContext } from "@/context/UserContext";
 import { api } from "@/convex/_generated/api";
 import { workspace } from "@/type";
@@ -7,6 +8,7 @@ import React, { useEffect, useState } from "react";
 
 const WorkspaceHistory = () => {
   const { userDetail } = useUserContext();
+  const { messages } = useMessageContext();
   const [workspaces, setWorkspaces] = useState<Array<workspace>>([]);
   const convex = useConvex();
 
@@ -20,7 +22,8 @@ const WorkspaceHistory = () => {
 
   useEffect(() => {
     userDetail && getWorkspace(userDetail._id);
-  }, [userDetail]);
+  }, [userDetail, messages]);
+  // console.log(workspaces);
   return (
     <div>
       <h2 className="font-medium text-lg">Your Chats</h2>

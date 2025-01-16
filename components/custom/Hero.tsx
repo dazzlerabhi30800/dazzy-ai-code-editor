@@ -27,7 +27,7 @@ const Hero = () => {
       role: "user",
       content: input,
     };
-    setMessages(( prev: arrayMsg) => [ ...prev, msg ]);
+    // setMessages(( prev: arrayMsg) => [ ...prev, msg ]);
     const workspaceId = await saveMessage({
       messages: [msg],
       user: userDetail?._id as any,

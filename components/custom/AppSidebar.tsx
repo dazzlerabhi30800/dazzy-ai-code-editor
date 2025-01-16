@@ -10,9 +10,10 @@ import { Button } from "../ui/button";
 import { MessageCircleCode } from "lucide-react";
 import WorkspaceHistory from "./WorkspaceHistory";
 import SideBarFooter from "./SideBarFooter";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { useRouter } from "next/navigation";
 
 export function AppSidebar() {
+  const router = useRouter();
   return (
     <Sidebar>
       <SidebarHeader className="p-5">
@@ -23,16 +24,16 @@ export function AppSidebar() {
           height={35}
           className="object-cover"
         />
-        <Button className="mt-3">
+        <Button className="mt-3" onClick={() => router.push("/")}>
           <MessageCircleCode className="text-xl" /> Start New Chat
         </Button>
       </SidebarHeader>
       <SidebarContent className="p-5 pt-0">
-      <SidebarGroup>
-      <WorkspaceHistory />
-      </SidebarGroup>
-      {/* <SidebarGroup /> */}
+        <SidebarGroup>
+          <WorkspaceHistory />
+        </SidebarGroup>
       </SidebarContent>
+      {/* // NOTE: Sidebar Footer */}
       <SidebarFooter>
         <SideBarFooter />
       </SidebarFooter>
