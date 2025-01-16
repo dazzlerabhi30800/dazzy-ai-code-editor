@@ -10,6 +10,7 @@ import { Button } from "../ui/button";
 import { MessageCircleCode } from "lucide-react";
 import WorkspaceHistory from "./WorkspaceHistory";
 import SideBarFooter from "./SideBarFooter";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 export function AppSidebar() {
   return (
@@ -27,10 +28,10 @@ export function AppSidebar() {
         </Button>
       </SidebarHeader>
       <SidebarContent className="p-5 pt-0">
-        <SidebarGroup>
-          <WorkspaceHistory />
-        </SidebarGroup>
-        {/* <SidebarGroup /> */}
+      <SidebarGroup>
+      <WorkspaceHistory />
+      </SidebarGroup>
+      {/* <SidebarGroup /> */}
       </SidebarContent>
       <SidebarFooter>
         <SideBarFooter />

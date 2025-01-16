@@ -1,3 +1,4 @@
+"use client";
 import {
   Dialog,
   DialogContent,
@@ -6,6 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import Lookup from "@/data/Lookup";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 import React from "react";
 import { Button } from "../ui/button";
@@ -47,22 +49,32 @@ const SignInDialog = ({
   });
   return (
     <Dialog open={isOpen} onOpenChange={closeDialog}>
-      <DialogContent className="text-center">
+      <DialogContent
+        className="text-center"
+        aria-describedby="dialog-description"
+      >
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-white text-center">
+          <DialogTitle className="sr-only text-2xl font-bold text-white text-center">
             {Lookup.SIGNIN_HEADING}
           </DialogTitle>
-          <DialogDescription className="mt-2 text-center">
+          <DialogDescription
+            id="dialog-description"
+            className="mt-2 text-center"
+          >
             {Lookup.SIGNIN_SUBHEADING}
           </DialogDescription>
         </DialogHeader>
-        <Button
-          onClick={() => login()}
-          className="bg-blue-500 text-white hover:bg-blue-400 mt-2 w-fit mx-auto"
-        >
-          Sign In With Google
-        </Button>
-        <p className="text-gray-500 text-xs">{Lookup.SIGNIn_AGREEMENT_TEXT}</p>
+        <div className="flex flex-col items-center gap-4">
+          <Button
+            onClick={() => login()}
+            className="bg-blue-500 text-white hover:bg-blue-400 mt-2 w-fit mx-auto"
+          >
+            Sign In With Google
+          </Button>
+          <p className="text-gray-500 text-xs">
+            {Lookup.SIGNIN_AGREEMENT_TEXT}
+          </p>
+        </div>
       </DialogContent>
     </Dialog>
   );

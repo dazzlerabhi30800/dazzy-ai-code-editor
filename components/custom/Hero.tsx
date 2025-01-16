@@ -1,5 +1,5 @@
 "use client";
-import { useMessageContext } from "@/context/MessageContext";
+import { arrayMsg,  useMessageContext } from "@/context/MessageContext";
 import Lookup from "@/data/Lookup";
 import { ArrowRight, Link } from "lucide-react";
 import React, { useState } from "react";
@@ -27,12 +27,13 @@ const Hero = () => {
       role: "user",
       content: input,
     };
-    setMessages(msg);
+    setMessages(( prev: arrayMsg) => [ ...prev, msg ]);
     const workspaceId = await saveMessage({
       messages: [msg],
       user: userDetail?._id as any,
     });
     router.push(`/workspace/${workspaceId}`);
+    setOpenDialog(false);
   };
 
   return (

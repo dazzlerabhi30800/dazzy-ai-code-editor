@@ -9,14 +9,14 @@ export type message = {
 export type arrayMsg = Array<message>;
 
 type msgContext = {
-  messages: message | any;
+  messages: arrayMsg;
   setMessages: React.Dispatch<React.SetStateAction<message | undefined | any>>;
 };
 
 const MessageContext = createContext<msgContext | null>(null);
 
 export default function MessageContextProvider({ children }: childrenType) {
-  const [messages, setMessages] = useState<undefined | message>();
+  const [messages, setMessages] = useState<arrayMsg>([]);
   return (
     <MessageContext.Provider value={{ messages, setMessages }}>
       {children}
