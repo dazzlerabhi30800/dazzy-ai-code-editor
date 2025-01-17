@@ -12,6 +12,7 @@ import axios from "axios";
 import Prompt from "@/data/Prompt";
 import ReactMarkdown from "react-markdown";
 import { countToken } from "@/configs/InputCountToken";
+import { Id } from "@/convex/_generated/dataModel";
 
 const ChatView = () => {
   const { id } = useParams();
@@ -28,7 +29,7 @@ const ChatView = () => {
   const getWorkspaceData = async (id: string) => {
     setLoading(true);
     const result = await convex.query(api.workspace.getWorkspace, {
-      workspaceId: id as any,
+      workspaceId: id as Id<"workspace">,
     });
     setMessages(result?.messages);
     setLoading(false);
@@ -50,12 +51,12 @@ const ChatView = () => {
     console.log(messages);
     await updateWorkspace({
       messages: [...messages, aiResponse],
-      workspaceId: id as any,
+      workspaceId: id as Id<"workspace">,
     });
     const tokenRemaining =
       Number(userDetail?.token) - Number(countToken(JSON.stringify(aiPrompt)));
     await updateToken({
-      userId: userDetail?._id as any,
+      userId: userDetail?._id as Id<"users">,
       token: tokenRemaining,
     });
     setLoading(false);

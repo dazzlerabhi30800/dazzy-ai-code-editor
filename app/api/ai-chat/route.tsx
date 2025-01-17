@@ -6,8 +6,10 @@ export async function POST(req: NextRequest) {
     const { prompt } = await req.json();
     const result = await chatSession.sendMessage(prompt);
     return NextResponse.json({ result: result.response.text() });
-  } catch (err: any) {
-    console.log(err);
-    return NextResponse.json({ err: err.message, status: 500 });
+  } catch (err: unknown) {
+    return NextResponse.json({
+      err: err instanceof Error ? err.message : "Unknown error",
+      status: 500,
+    });
   }
 }

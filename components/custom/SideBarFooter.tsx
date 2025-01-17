@@ -1,10 +1,15 @@
-import { HelpCircle, LogOut, Settings, Wallet } from "lucide-react";
+import { HelpCircle, LogOut, LucideIcon, Settings, Wallet } from "lucide-react";
 import React from "react";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { useUserContext } from "@/context/UserContext";
 import { googleLogout } from "@react-oauth/google";
 
+type option = {
+  name: string;
+  icon: LucideIcon;
+  path?: string;
+};
 const SideBarFooter = () => {
   const router = useRouter();
   const { setUserDetail } = useUserContext();
@@ -28,7 +33,7 @@ const SideBarFooter = () => {
       path: "/logout",
     },
   ];
-  const handleRoute = (option: any) => {
+  const handleRoute = (option: option) => {
     if (!option.path) return;
     if (option.name === "Sign Out") {
       googleLogout();
@@ -41,7 +46,7 @@ const SideBarFooter = () => {
   };
   return (
     <footer className="flex flex-col justify-start p-5 gap-3 mb-8">
-      {options.map((option: any, index) => (
+      {options.map((option: option, index) => (
         <Button
           onClick={() => handleRoute(option)}
           key={index}

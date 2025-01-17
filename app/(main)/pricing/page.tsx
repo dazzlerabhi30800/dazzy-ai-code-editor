@@ -5,7 +5,7 @@ import { useUserContext } from "@/context/UserContext";
 import Lookup from "@/data/Lookup";
 import React from "react";
 
-const page = () => {
+const PricingPage = () => {
   const { userDetail } = useUserContext();
   return (
     <div className="flex flex-col w-full py-5 px-10 items-center">
@@ -29,4 +29,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default PricingPage;

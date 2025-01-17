@@ -8,6 +8,7 @@ import SignInDialog from "./SignInDialog";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useRouter } from "next/navigation";
+import { Id } from "@/convex/_generated/dataModel";
 
 const Hero = () => {
   const [userInput, setUserInput] = useState<string | undefined>();
@@ -28,7 +29,7 @@ const Hero = () => {
     // setMessages(( prev: arrayMsg) => [ ...prev, msg ]);
     const workspaceId = await saveMessage({
       messages: [msg],
-      user: userDetail?._id as any,
+      user: userDetail?._id as Id<"users">,
     });
     router.push(`/workspace/${workspaceId}`);
     setOpenDialog(false);

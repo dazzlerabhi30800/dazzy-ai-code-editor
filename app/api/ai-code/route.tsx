@@ -7,8 +7,10 @@ export async function POST(req: NextRequest) {
     const result = await codeChatSession.sendMessage(prompt);
     const resp = result.response.text();
     return NextResponse.json(JSON.parse(resp));
-  } catch (err: any) {
-    console.log(err);
-    return NextResponse.json({ err: err.message, status: 500 });
+  } catch (err: unknown) {
+    return NextResponse.json({
+      err: err instanceof Error ? err.message : "Unknown Error",
+      status: 500,
+    });
   }
 }

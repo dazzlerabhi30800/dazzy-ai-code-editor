@@ -1,6 +1,7 @@
 import { useMessageContext } from "@/context/MessageContext";
 import { useUserContext } from "@/context/UserContext";
 import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
 import { workspace } from "@/type";
 import { useConvex } from "convex/react";
 import Link from "next/link";
@@ -15,7 +16,7 @@ const WorkspaceHistory = () => {
   //NOTE: get all the workspaces
   const getWorkspace = async (id: string) => {
     const result = await convex.query(api.workspace.getAllWorkspace, {
-      userId: id as any,
+      userId: id as Id<"users">,
     });
     setWorkspaces(result as workspace[]);
   };

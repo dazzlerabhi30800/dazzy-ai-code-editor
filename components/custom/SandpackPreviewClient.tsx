@@ -1,9 +1,13 @@
 import React, { useEffect, useRef } from "react";
-import { SandpackPreview, useSandpack } from "@codesandbox/sandpack-react";
+import {
+  SandpackPreview,
+  SandpackPreviewRef,
+  useSandpack,
+} from "@codesandbox/sandpack-react";
 import { useActionContext } from "@/context/ActionContext";
 
 const SandpackPreviewClient = () => {
-  const sandboxRef = useRef<any>(null);
+  const sandboxRef = useRef<SandpackPreviewRef>(null);
   const tabStyle = {
     height: "78vh",
   };
@@ -12,17 +16,19 @@ const SandpackPreviewClient = () => {
   const { sandpack } = useSandpack();
 
   const getSandpackClient = async () => {
+    if (!sandboxRef.current) return;
     const client = sandboxRef?.current?.getClient();
-    console.log(client);
-    console.log(action);
     if (client) {
-      const result = await client.getCodeSandboxURL();
+      const result =
+        await Object.getPrototypeOf(client).getCodeSandboxURL?.call(client);
       if (action.actionType === "deploy") {
+        console.log(result);
         const url = "https://" + result?.sandboxId + ".csb.app/";
         console.log(encodeURI(url));
         window.open(encodeURI(url));
       } else if (action.actionType === "export") {
         window.open(result?.editorUrl);
+        console.log(result);
       } else {
         return;
       }
@@ -30,7 +36,7 @@ const SandpackPreviewClient = () => {
   };
   useEffect(() => {
     getSandpackClient();
-  }, [sandpack && action]);
+  }, [action]);
   return (
     <>
       <SandpackPreview ref={sandboxRef} showNavigator={true} style={tabStyle} />

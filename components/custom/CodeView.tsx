@@ -16,6 +16,7 @@ import { api } from "@/convex/_generated/api";
 import { useParams } from "next/navigation";
 import { Loader2Icon } from "lucide-react";
 import SandpackPreviewClient from "./SandpackPreviewClient";
+import { Id } from "@/convex/_generated/dataModel";
 
 type status = "code" | "preview";
 
@@ -28,8 +29,8 @@ const CodeView = () => {
   const tabStyle = {
     height: "78vh",
   };
-  const [circleStyle, setCircleStyle] = useState<any>({
-    left: "12px",
+  const [circleStyle, setCircleStyle] = useState({
+    left: 12,
     width: "35%",
   });
   const [files, setFiles] = useState(Lookup.DEFAULT_FILE);
@@ -57,7 +58,7 @@ const CodeView = () => {
   const getCurrentFiles = async () => {
     setLoading(true);
     const result = await convex.query(api.workspace.getWorkspace, {
-      workspaceId: id as any,
+      workspaceId: id as Id<"workspace">,
     });
     const mergedFiles = { ...Lookup.DEFAULT_FILE, ...result?.fileData };
     setFiles(mergedFiles);
@@ -75,7 +76,7 @@ const CodeView = () => {
     const mergedFiles = { ...Lookup.DEFAULT_FILE, ...data?.files };
     setFiles(mergedFiles);
     await updateFiles({
-      workspaceId: id as any,
+      workspaceId: id as Id<"workspace">,
       files: data.files,
     });
     setLoading(false);
@@ -84,8 +85,9 @@ const CodeView = () => {
   const handleStatusChange = (status: string) => {
     const button = document.getElementById(status);
     if (!button) return;
-    const dimensions: any = button?.getBoundingClientRect();
-    const parentDim: any = button?.offsetParent?.getBoundingClientRect();
+    const dimensions = button?.getBoundingClientRect();
+    const parentDim = button?.offsetParent?.getBoundingClientRect();
+    if (!parentDim || !dimensions) return;
     const leftPercent = dimensions?.left - parentDim?.left;
     setCircleStyle({
       ...circleStyle,

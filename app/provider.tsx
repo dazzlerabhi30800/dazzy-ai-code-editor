@@ -27,7 +27,7 @@ export default function ThemeProvider({
     const result = await convex.query(api.users.getUser, {
       email: user?.email,
     });
-    setUserDetail(result as any);
+    setUserDetail({ ...result, token: result.token ?? 0 });
   };
   React.useEffect(() => {
     isAuthenticated();
