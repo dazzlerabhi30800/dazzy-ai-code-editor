@@ -22,5 +22,5 @@ interface pricing {
   tokens: string;
   value: number;
   desc: string;
-  price: number;
+  price: string;
 }

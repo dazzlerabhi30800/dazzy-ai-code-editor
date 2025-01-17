@@ -8,6 +8,7 @@ import { api } from "@/convex/_generated/api";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/custom/AppSidebar";
 import Header from "@/components/custom/Header";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 export default function ThemeProvider({
   children,
@@ -33,18 +34,22 @@ export default function ThemeProvider({
   }, []);
   return (
     <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_AUTH_KEY!}>
-      <NextThemesProvider
-        attribute="class"
-        defaultTheme="dark"
-        enableSystem
-        disableTransitionOnChange
+      <PayPalScriptProvider
+        options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID! }}
       >
-        <Header />
-        <SidebarProvider defaultOpen={true}>
-          <AppSidebar />
-          {children}
-        </SidebarProvider>
-      </NextThemesProvider>
+        <NextThemesProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Header />
+          <SidebarProvider defaultOpen={true}>
+            <AppSidebar />
+            {children}
+          </SidebarProvider>
+        </NextThemesProvider>
+      </PayPalScriptProvider>
     </GoogleOAuthProvider>
   );
 }
