@@ -7,7 +7,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import Lookup from "@/data/Lookup";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 import React from "react";
 import { Button } from "../ui/button";

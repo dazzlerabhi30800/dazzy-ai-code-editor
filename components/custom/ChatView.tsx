@@ -100,7 +100,7 @@ const ChatView = () => {
             ref={chatRef}
             className="flex items-center gap-2 bg-chatBg p-3 rounded-lg mb-2 text-sm leading-6"
           >
-            {message.role === "user" && (
+            {message.role === "user" && userDetail && (
               <Image
                 src={userDetail?.picture as string}
                 alt={userDetail?.name as string}

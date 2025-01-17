@@ -8,26 +8,26 @@ import { api } from "@/convex/_generated/api";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/custom/AppSidebar";
 import Header from "@/components/custom/Header";
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { useRouter } from "next/navigation";
 
 export default function ThemeProvider({
   children,
 }: React.ComponentProps<typeof NextThemesProvider>) {
   const convex = useConvex();
   const { setUserDetail } = useUserContext();
+  const router = useRouter();
 
   const isAuthenticated = async () => {
     const user = JSON.parse(localStorage.getItem("user") || "{}");
-    if (user.email) {
-      const result = await convex.query(api.users.getUser, {
-        email: user?.email,
-      });
-      setUserDetail(result as any);
+    if (!user?.email) {
+      router.push("/");
       return;
     }
-    return;
-    // }
-    // if (typeof window !== undefined) {
+    const result = await convex.query(api.users.getUser, {
+      email: user?.email,
+    });
+    setUserDetail(result as any);
   };
   React.useEffect(() => {
     isAuthenticated();

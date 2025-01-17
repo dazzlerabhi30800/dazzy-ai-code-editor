@@ -4,7 +4,6 @@ import {
   SandpackProvider,
   SandpackCodeEditor,
   SandpackLayout,
-  SandpackPreview,
   SandpackFileExplorer,
 } from "@codesandbox/sandpack-react";
 import { Button } from "../ui/button";
@@ -16,13 +15,16 @@ import { useConvex, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useParams } from "next/navigation";
 import { Loader2Icon } from "lucide-react";
+import SandpackPreviewClient from "./SandpackPreviewClient";
+
+type status = "code" | "preview";
 
 const CodeView = () => {
   const { messages } = useMessageContext();
   const { id } = useParams();
   const updateFiles = useMutation(api.workspace.updateFiles);
   const convex = useConvex();
-  const [activeTab, setActiveTab] = useState<string>("code");
+  const [activeTab, setActiveTab] = useState<status>("preview");
   const tabStyle = {
     height: "78vh",
   };
@@ -41,6 +43,10 @@ const CodeView = () => {
       }
     }
   }, [messages]);
+
+  useEffect(() => {
+    handleStatusChange("preview");
+  }, []);
 
   //NOTE: get current workspace files
   useEffect(() => {
@@ -86,7 +92,7 @@ const CodeView = () => {
       left: leftPercent,
       width: dimensions.width + "px",
     });
-    setActiveTab(status);
+    setActiveTab(status as status);
   };
   return (
     <div className="relative">
@@ -134,7 +140,7 @@ const CodeView = () => {
               <SandpackCodeEditor style={tabStyle} />
             </>
           ) : (
-            <SandpackPreview showNavigator={true} style={tabStyle} />
+            <SandpackPreviewClient />
           )}
         </SandpackLayout>
       </SandpackProvider>
