@@ -57,10 +57,9 @@ export default config;
     }
   },
   DEPENDANCY: {
-
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    autoprefixer: "^10.0.0",
+    "autoprefixer": "^10.0.0",
     "uuid4": "^2.0.3",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",

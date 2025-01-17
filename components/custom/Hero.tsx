@@ -1,5 +1,4 @@
 "use client";
-import { arrayMsg,  useMessageContext } from "@/context/MessageContext";
 import Lookup from "@/data/Lookup";
 import { ArrowRight, Link } from "lucide-react";
 import React, { useState } from "react";
@@ -12,7 +11,6 @@ import { useRouter } from "next/navigation";
 
 const Hero = () => {
   const [userInput, setUserInput] = useState<string | undefined>();
-  const { setMessages } = useMessageContext();
   const { userDetail } = useUserContext();
   const [openDialog, setOpenDialog] = useState(false);
   const saveMessage = useMutation(api.workspace.CreateWorkspace);

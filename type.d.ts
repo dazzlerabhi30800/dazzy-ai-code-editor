@@ -16,3 +16,11 @@ interface workspace {
   user: string;
   _creationTime: any;
 }
+
+interface pricing {
+  name: string;
+  tokens: string;
+  value: number;
+  desc: string;
+  price: number;
+}
