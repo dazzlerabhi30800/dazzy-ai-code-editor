@@ -51,7 +51,8 @@ const CodeView = () => {
 
   //NOTE: get current workspace files
   useEffect(() => {
-    id && getCurrentFiles();
+    if (!id) return;
+    getCurrentFiles();
   }, [id]);
 
   // NOTE: get workspace data to set files

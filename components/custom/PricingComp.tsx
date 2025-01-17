@@ -1,11 +1,11 @@
 import Lookup from "@/data/Lookup";
 import { pricing } from "@/type";
 import React from "react";
-import { Button } from "../ui/button";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { useUserContext } from "@/context/UserContext";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
 
 const PricingComp = () => {
   const { userDetail } = useUserContext();
@@ -16,7 +16,7 @@ const PricingComp = () => {
     const token = (userDetail?.token as number) + Number(option.value);
     await updateToken({
       token: token,
-      userId: userDetail?._id as any,
+      userId: userDetail?._id as Id<"users">,
     });
   };
 

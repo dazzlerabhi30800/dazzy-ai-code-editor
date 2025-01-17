@@ -22,7 +22,8 @@ const WorkspaceHistory = () => {
   };
 
   useEffect(() => {
-    userDetail && getWorkspace(userDetail._id);
+    if (!userDetail) return;
+    getWorkspace(userDetail._id);
   }, [userDetail, messages]);
   // console.log(workspaces);
   return (

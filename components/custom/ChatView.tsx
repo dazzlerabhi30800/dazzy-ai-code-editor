@@ -76,7 +76,8 @@ const ChatView = () => {
   };
 
   useEffect(() => {
-    id && userDetail && getWorkspaceData(id as string);
+    if (!id && !userDetail) return;
+    getWorkspaceData(id as string);
   }, [userDetail]);
 
   useEffect(() => {
@@ -85,12 +86,11 @@ const ChatView = () => {
     });
     if (messages?.length > 0) {
       const role = messages[messages.length - 1].role;
-      if (role === "user") {
-        userDetail && getApiResponse();
+      if (role === "user" && userDetail) {
+        getApiResponse();
       }
     }
   }, [messages]);
-  // console.log(messages);
 
   return (
     <div className="relative flex flex-col h-[85vh]">
