@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import {
   SandpackPreview,
   SandpackPreviewRef,
-  useSandpack,
 } from "@codesandbox/sandpack-react";
 import { useActionContext } from "@/context/ActionContext";
 
@@ -13,7 +12,7 @@ const SandpackPreviewClient = () => {
   };
   const { action } = useActionContext();
 
-  const { sandpack } = useSandpack();
+  // const { sandpack } = useSandpack();
 
   const getSandpackClient = async () => {
     if (!sandboxRef.current) return;
