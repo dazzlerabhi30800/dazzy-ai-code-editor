@@ -77,7 +77,7 @@ const CodeView = () => {
       // prompt: codePrompt,
       prompt: "very well let's see if it works or not",
     });
-    console.log(codePrompt);
+    console.log(result);
     if (result.data.err) {
       setLoading(false);
       return;
@@ -85,10 +85,10 @@ const CodeView = () => {
     const data = result.data;
     const mergedFiles = { ...Lookup.DEFAULT_FILE, ...data?.files };
     setFiles(mergedFiles);
-    await updateFiles({
-      workspaceId: id as Id<"workspace">,
-      files: data.files,
-    });
+    // await updateFiles({
+    //   workspaceId: id as Id<"workspace">,
+    //   files: data.files,
+    // });
     setLoading(false);
   };
 
