@@ -84,8 +84,8 @@ const CodeView = () => {
       workspaceId: id as Id<"workspace">,
       files: data.files,
     })
-      .then((_) => setLoading(false))
-      .catch((_) => setLoading(false));
+      .then(() => setLoading(false))
+      .catch(() => setLoading(false));
     // setLoading(false);
   };
   console.log(files);
