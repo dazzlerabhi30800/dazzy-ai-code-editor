@@ -1,7 +1,7 @@
 import { codeChatSession } from "@/configs/AiModel";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: any) {
+export async function POST(req: NextRequest) {
   try {
     const { prompt } = await req.json();
     const result = await codeChatSession.sendMessage(prompt);
