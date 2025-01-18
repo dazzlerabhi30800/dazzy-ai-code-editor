@@ -12,7 +12,6 @@ import { useMessageContext } from "@/context/MessageContext";
 import axios from "axios";
 import Prompt from "@/data/Prompt";
 import { useConvex, useMutation } from "convex/react";
-// import { useConvex } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useParams } from "next/navigation";
 import { Loader2Icon } from "lucide-react";
@@ -79,22 +78,18 @@ const CodeView = () => {
         prompt: codePrompt,
       })
       .then(async (result) => {
-        const data = result.data.fileData;
-        const mergedFiles = { ...Lookup.DEFAULT_FILE, ...data?.files };
+        console.log(result);
+        const data = result?.data?.fileData;
+        const parsedData = JSON.parse(data);
+        const mergedFiles = { ...Lookup.DEFAULT_FILE, ...parsedData?.files };
         setFiles(mergedFiles);
         await updateFiles({
           workspaceId: id as Id<"workspace">,
-          files: data.files,
+          files: parsedData.files,
         });
       })
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
-    // console.log(result);
-    // if (result.data.error) {
-    //   setLoading(false);
-    //   return;
-    // }
-    // setLoading(false);
   };
 
   const handleStatusChange = (status: string) => {

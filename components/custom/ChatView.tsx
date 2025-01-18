@@ -47,7 +47,6 @@ const ChatView = () => {
       content: result?.data?.result,
     };
     setMessages((prev: arrayMsg) => [...prev, aiResponse]);
-    console.log(messages);
     await updateWorkspace({
       messages: [...messages, aiResponse],
       workspaceId: id as Id<"workspace">,

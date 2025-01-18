@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
     const { prompt } = await req.json();
     const result = await codeChatSession.sendMessage(prompt);
     const resp = result.response.text();
-    return NextResponse.json({ fileData: JSON.parse(JSON.stringify(resp)) });
+    return NextResponse.json({ fileData: resp });
   } catch (err: unknown) {
     return NextResponse.json({
       error: err instanceof Error ? err.message : "Unknown Error",
