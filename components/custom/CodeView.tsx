@@ -74,12 +74,12 @@ const CodeView = () => {
     setLoading(true);
     const codePrompt =
       messages[messages?.length - 1].content + " " + Prompt.CODE_GEN_PROMPT;
+    console.log(typeof prompt);
     await axios
       .post("/api/ai-code", {
-        prompt: codePrompt,
+        prompt: codePrompt.toString(),
       })
       .then(async (result) => {
-        console.log(typeof prompt);
         console.log(result);
         // const data = result?.data?.fileData;
         // const parsedData = JSON.parse(data);
