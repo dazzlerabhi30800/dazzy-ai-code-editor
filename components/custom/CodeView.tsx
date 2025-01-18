@@ -73,6 +73,7 @@ const CodeView = () => {
     setLoading(true);
     const codePrompt =
       messages[messages?.length - 1].content + Prompt.CODE_GEN_PROMPT;
+    console.log(codePrompt);
     const result = await axios.post("/api/ai-code", {
       prompt: codePrompt,
     });
@@ -82,9 +83,12 @@ const CodeView = () => {
     await updateFiles({
       workspaceId: id as Id<"workspace">,
       files: data.files,
-    });
-    setLoading(false);
+    })
+      .then((_) => setLoading(false))
+      .catch((_) => setLoading(false));
+    // setLoading(false);
   };
+  console.log(files);
 
   const handleStatusChange = (status: string) => {
     const button = document.getElementById(status);
