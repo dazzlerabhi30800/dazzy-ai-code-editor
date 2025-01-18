@@ -76,7 +76,7 @@ const CodeView = () => {
     console.log(typeof codePrompt);
     await axios
       .post("/api/ai-code", {
-        prompt: JSON.stringify(codePrompt),
+        prompt: codePrompt,
       })
       .then(async (result) => {
         console.log(result);
