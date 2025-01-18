@@ -11,7 +11,8 @@ import Lookup from "@/data/Lookup";
 import { useMessageContext } from "@/context/MessageContext";
 import axios from "axios";
 import Prompt from "@/data/Prompt";
-import { useConvex, useMutation } from "convex/react";
+// import { useConvex, useMutation } from "convex/react";
+import { useConvex } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useParams } from "next/navigation";
 import { Loader2Icon } from "lucide-react";
@@ -25,7 +26,7 @@ const CodeView = () => {
   const { messages } = useMessageContext();
   const { id } = useParams();
   const { action } = useActionContext();
-  const updateFiles = useMutation(api.workspace.updateFiles);
+  // const updateFiles = useMutation(api.workspace.updateFiles);
   const convex = useConvex();
   const [activeTab, setActiveTab] = useState<status>("code");
   const tabStyle = {
@@ -79,14 +80,14 @@ const CodeView = () => {
       })
       .then(async (result) => {
         console.log(result);
-        const data = result?.data?.fileData;
-        const parsedData = JSON.parse(data);
-        const mergedFiles = { ...Lookup.DEFAULT_FILE, ...parsedData?.files };
-        setFiles(mergedFiles);
-        await updateFiles({
-          workspaceId: id as Id<"workspace">,
-          files: parsedData.files,
-        });
+        // const data = result?.data?.fileData;
+        // const parsedData = JSON.parse(data);
+        // const mergedFiles = { ...Lookup.DEFAULT_FILE, ...parsedData?.files };
+        // setFiles(mergedFiles);
+        // await updateFiles({
+        //   workspaceId: id as Id<"workspace">,
+        //   files: parsedData.files,
+        // });
       })
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
