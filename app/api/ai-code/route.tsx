@@ -10,7 +10,8 @@ export async function POST(req: NextRequest) {
       });
     }
     const result = await codeChatSession.sendMessage(prompt);
-    const resp = result.response.text();
+    // const resp = result.response.text();
+    const resp = result.response;
     return NextResponse.json({ fileData: resp });
   } catch (err: unknown) {
     return NextResponse.json({
