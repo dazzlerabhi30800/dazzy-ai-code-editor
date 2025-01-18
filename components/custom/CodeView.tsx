@@ -79,6 +79,7 @@ const CodeView = () => {
         prompt: codePrompt,
       })
       .then(async (result) => {
+        console.log(typeof prompt);
         console.log(result);
         // const data = result?.data?.fileData;
         // const parsedData = JSON.parse(data);

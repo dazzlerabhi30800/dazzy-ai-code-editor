@@ -5,9 +5,7 @@ export async function POST(req: NextRequest) {
   try {
     const { prompt } = await req.json();
     console.log(prompt);
-    const result = await codeChatSession.sendMessage(
-      "you are very good in this world we cannot hope for better",
-    );
+    const result = await codeChatSession.sendMessage(prompt);
     const resp = result.response.text();
     return NextResponse.json({ fileData: resp });
   } catch (err: unknown) {
