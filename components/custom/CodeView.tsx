@@ -8,10 +8,11 @@ import {
 } from "@codesandbox/sandpack-react";
 import { Button } from "../ui/button";
 import Lookup from "@/data/Lookup";
-import Prompt from "@/data/Prompt";
+// import Prompt from "@/data/Prompt";
 import { useMessageContext } from "@/context/MessageContext";
 import axios from "axios";
-import { useConvex, useMutation } from "convex/react";
+// import { useConvex, useMutation } from "convex/react";
+import { useConvex } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useParams } from "next/navigation";
 import { Loader2Icon } from "lucide-react";
@@ -25,7 +26,7 @@ const CodeView = () => {
   const { messages } = useMessageContext();
   const { id } = useParams();
   const { action } = useActionContext();
-  const updateFiles = useMutation(api.workspace.updateFiles);
+  // const updateFiles = useMutation(api.workspace.updateFiles);
   const convex = useConvex();
   const [activeTab, setActiveTab] = useState<status>("code");
   const tabStyle = {
