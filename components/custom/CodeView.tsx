@@ -73,22 +73,22 @@ const CodeView = () => {
     setLoading(true);
     const codePrompt =
       messages[messages?.length - 1].content + Prompt.CODE_GEN_PROMPT;
-    console.log(codePrompt);
     const result = await axios.post("/api/ai-code", {
       prompt: codePrompt,
     });
+    if (result.data.err) {
+      setLoading(false);
+      return;
+    }
     const data = result.data;
     const mergedFiles = { ...Lookup.DEFAULT_FILE, ...data?.files };
     setFiles(mergedFiles);
     await updateFiles({
       workspaceId: id as Id<"workspace">,
       files: data.files,
-    })
-      .then(() => setLoading(false))
-      .catch(() => setLoading(false));
-    // setLoading(false);
+    });
+    setLoading(false);
   };
-  console.log(files);
 
   const handleStatusChange = (status: string) => {
     const button = document.getElementById(status);
