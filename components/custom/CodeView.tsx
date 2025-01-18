@@ -74,23 +74,27 @@ const CodeView = () => {
     setLoading(true);
     const codePrompt =
       messages[messages?.length - 1].content + Prompt.CODE_GEN_PROMPT;
-    const result = await axios.post("/api/ai-code", {
-      prompt: codePrompt,
-      // prompt: "very well let's see if it works or not",
-    });
-    console.log(result);
-    if (result.data.error) {
-      setLoading(false);
-      return;
-    }
-    const data = result.data.fileData;
-    const mergedFiles = { ...Lookup.DEFAULT_FILE, ...data?.files };
-    setFiles(mergedFiles);
-    await updateFiles({
-      workspaceId: id as Id<"workspace">,
-      files: data.files,
-    });
-    setLoading(false);
+    await axios
+      .post("/api/ai-code", {
+        prompt: codePrompt,
+      })
+      .then(async (result) => {
+        const data = result.data.fileData;
+        const mergedFiles = { ...Lookup.DEFAULT_FILE, ...data?.files };
+        setFiles(mergedFiles);
+        await updateFiles({
+          workspaceId: id as Id<"workspace">,
+          files: data.files,
+        });
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false));
+    // console.log(result);
+    // if (result.data.error) {
+    //   setLoading(false);
+    //   return;
+    // }
+    // setLoading(false);
   };
 
   const handleStatusChange = (status: string) => {

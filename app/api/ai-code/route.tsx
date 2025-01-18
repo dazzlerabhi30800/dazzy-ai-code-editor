@@ -4,10 +4,8 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   try {
     const { prompt } = await req.json();
-    console.log(prompt);
     const result = await codeChatSession.sendMessage(prompt);
     const resp = result.response.text();
-    console.log(resp);
     return NextResponse.json({ fileData: JSON.parse(resp) });
   } catch (err: unknown) {
     return NextResponse.json({
