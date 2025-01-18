@@ -4,7 +4,7 @@ import CodeView from "@/components/custom/CodeView";
 import ToggleSidebarButton from "@/components/custom/ToggleSidebarButton";
 import React from "react";
 
-const page = () => {
+const WorkSpace = () => {
   return (
     <main className="mt-0 p-6 md:p-10">
       <ToggleSidebarButton />
@@ -18,4 +18,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default WorkSpace;
