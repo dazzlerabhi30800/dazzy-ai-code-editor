@@ -8,11 +8,11 @@ import {
 } from "@codesandbox/sandpack-react";
 import { Button } from "../ui/button";
 import Lookup from "@/data/Lookup";
-// import Prompt from "@/data/Prompt";
 import { useMessageContext } from "@/context/MessageContext";
 import axios from "axios";
-// import { useConvex, useMutation } from "convex/react";
-import { useConvex } from "convex/react";
+import Prompt from "@/data/Prompt";
+import { useConvex, useMutation } from "convex/react";
+// import { useConvex } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useParams } from "next/navigation";
 import { Loader2Icon } from "lucide-react";
@@ -26,7 +26,7 @@ const CodeView = () => {
   const { messages } = useMessageContext();
   const { id } = useParams();
   const { action } = useActionContext();
-  // const updateFiles = useMutation(api.workspace.updateFiles);
+  const updateFiles = useMutation(api.workspace.updateFiles);
   const convex = useConvex();
   const [activeTab, setActiveTab] = useState<status>("code");
   const tabStyle = {
@@ -72,23 +72,24 @@ const CodeView = () => {
 
   const generateAiCode = async () => {
     setLoading(true);
-    // const codePrompt = messages[messages?.length - 1].content + Prompt.CODE_GEN_PROMPT;
+    const codePrompt =
+      messages[messages?.length - 1].content + Prompt.CODE_GEN_PROMPT;
     const result = await axios.post("/api/ai-code", {
-      // prompt: codePrompt,
-      prompt: "very well let's see if it works or not",
+      prompt: codePrompt,
+      // prompt: "very well let's see if it works or not",
     });
     console.log(result);
-    if (result.data.err) {
+    if (result.data.error) {
       setLoading(false);
       return;
     }
-    const data = result.data;
+    const data = result.data.fileData;
     const mergedFiles = { ...Lookup.DEFAULT_FILE, ...data?.files };
     setFiles(mergedFiles);
-    // await updateFiles({
-    //   workspaceId: id as Id<"workspace">,
-    //   files: data.files,
-    // });
+    await updateFiles({
+      workspaceId: id as Id<"workspace">,
+      files: data.files,
+    });
     setLoading(false);
   };
 

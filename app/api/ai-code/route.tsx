@@ -8,10 +8,10 @@ export async function POST(req: NextRequest) {
     const result = await codeChatSession.sendMessage(prompt);
     const resp = result.response.text();
     console.log(resp);
-    return NextResponse.json(JSON.parse(resp));
+    return NextResponse.json({ fileData: JSON.parse(resp) });
   } catch (err: unknown) {
     return NextResponse.json({
-      err: err instanceof Error ? err.message : "Unknown Error",
+      error: err instanceof Error ? err.message : "Unknown Error",
       status: 500,
     });
   }
