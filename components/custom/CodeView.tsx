@@ -17,15 +17,17 @@ import { useParams } from "next/navigation";
 import { Loader2Icon } from "lucide-react";
 import SandpackPreviewClient from "./SandpackPreviewClient";
 import { Id } from "@/convex/_generated/dataModel";
+import { useActionContext } from "@/context/ActionContext";
 
 type status = "code" | "preview";
 
 const CodeView = () => {
   const { messages } = useMessageContext();
   const { id } = useParams();
+  const { action } = useActionContext();
   const updateFiles = useMutation(api.workspace.updateFiles);
   const convex = useConvex();
-  const [activeTab, setActiveTab] = useState<status>("preview");
+  const [activeTab, setActiveTab] = useState<status>("code");
   const tabStyle = {
     height: "78vh",
   };
@@ -46,8 +48,9 @@ const CodeView = () => {
   }, [messages]);
 
   useEffect(() => {
+    if (action.actionType == "") return;
     handleStatusChange("preview");
-  }, []);
+  }, [action]);
 
   //NOTE: get current workspace files
   useEffect(() => {
