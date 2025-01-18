@@ -73,10 +73,10 @@ const CodeView = () => {
     setLoading(true);
     const codePrompt =
       messages[messages?.length - 1].content + Prompt.CODE_GEN_PROMPT;
-    console.log(codePrompt);
     const result = await axios.post("/api/ai-code", {
       prompt: codePrompt,
     });
+    console.log(result);
     if (result.data.err) {
       setLoading(false);
       return;
