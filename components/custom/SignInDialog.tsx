@@ -12,7 +12,7 @@ import React from "react";
 import { Button } from "../ui/button";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import { useUserContext } from "@/context/UserContext";
+import { user, useUserContext } from "@/context/UserContext";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { nanoid } from "nanoid";
@@ -43,7 +43,7 @@ const SignInDialog = ({
       if (typeof window !== undefined) {
         window.localStorage.setItem("user", JSON.stringify(user));
       }
-      setUserDetail(createdUser as any);
+      setUserDetail(createdUser as user);
       closeDialog();
       toast.success(`Welcome Back ${user?.name}`);
     },
