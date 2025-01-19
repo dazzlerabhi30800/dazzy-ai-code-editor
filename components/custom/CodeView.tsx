@@ -79,12 +79,11 @@ const CodeView = () => {
       })
       .then(async (result) => {
         const data = result?.data?.fileData;
-        const parsedData = JSON.parse(data);
-        const mergedFiles = { ...Lookup.DEFAULT_FILE, ...parsedData?.files };
+        const mergedFiles = { ...Lookup.DEFAULT_FILE, ...data?.files };
         setFiles(mergedFiles);
         await updateFiles({
           workspaceId: id as Id<"workspace">,
-          files: parsedData.files,
+          files: data.files,
         });
       })
       .catch((err) => console.log(err))

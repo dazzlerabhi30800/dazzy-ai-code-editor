@@ -21,9 +21,9 @@ export const CreateUser = mutation({
         uid: args.uid,
         token: 50000,
       });
-      return result;
+      return result[0];
     }
-    return user;
+    return user[0];
   },
 });
 

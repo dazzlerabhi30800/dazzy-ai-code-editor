@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { useUserContext } from "@/context/UserContext";
 import { googleLogout } from "@react-oauth/google";
+import { toast } from "sonner";
 
 type option = {
   name: string;
@@ -40,6 +41,7 @@ const SideBarFooter = () => {
       window.localStorage.removeItem("user");
       router.push("/");
       setUserDetail(null);
+      toast.success("You have been logged out");
       return;
     }
     router.push(option.path);

@@ -25,7 +25,6 @@ const WorkspaceHistory = () => {
     if (!userDetail) return;
     getWorkspace(userDetail._id);
   }, [userDetail, messages]);
-  // console.log(workspaces);
   return (
     <div>
       <h2 className="font-medium text-lg">Your Chats</h2>

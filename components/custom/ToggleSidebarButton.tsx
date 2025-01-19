@@ -9,13 +9,13 @@ const ToggleSidebarButton = () => {
     <>
       <Button
         onClick={toggleSidebar}
-        className="hidden md:block mb-4 self-start"
+        className="hidden md:block self-start"
       >
         {open ? <X /> : <Menu />}
       </Button>
       <Button
         onClick={() => setOpenMobile(!openMobile)}
-        className="md:hidden mb-4 self-start"
+        className="md:hidden self-start"
       >
         {openMobile ? <X /> : <Menu />}
       </Button>

@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ConvexClientProvider } from "./ConvexProvider";
 import ContextProvider from "./ContextProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -23,6 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.className}`} suppressHydrationWarning={true}>
+        <Toaster />
         <ConvexClientProvider>
           <ContextProvider>{children}</ContextProvider>
         </ConvexClientProvider>

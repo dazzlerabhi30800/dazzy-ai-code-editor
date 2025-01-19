@@ -11,7 +11,7 @@ const ContextProvider = ({ children }: childrenType) => {
   useEffect(() => {
     setClient(true);
   }, []);
-  if (!client) return <div>Loading...</div>;
+  if (!client) return;
   return (
     <MessageContextProvider>
       <UserContextProvider>

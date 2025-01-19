@@ -16,6 +16,7 @@ import { useUserContext } from "@/context/UserContext";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { nanoid } from "nanoid";
+import { toast } from "sonner";
 
 const SignInDialog = ({
   isOpen,
@@ -30,19 +31,21 @@ const SignInDialog = ({
     onSuccess: async (tokenResponse) => {
       const userInfo = await axios.get(
         "https://www.googleapis.com/oauth2/v3/userinfo",
-        { headers: { Authorization: `Bearer ${tokenResponse?.access_token}` } }
+        { headers: { Authorization: `Bearer ${tokenResponse?.access_token}` } },
       );
       const user = userInfo?.data;
-      await CreateUser({
+      const createdUser = await CreateUser({
         name: user.name,
         picture: user.picture,
         email: user.email,
         uid: nanoid(),
       });
-      setUserDetail(userInfo?.data);
       if (typeof window !== undefined) {
         window.localStorage.setItem("user", JSON.stringify(user));
       }
+      setUserDetail(createdUser as any);
+      closeDialog();
+      toast.success(`Welcome Back ${user?.name}`);
     },
     onError: (errResponse) => console.log(errResponse),
   });
