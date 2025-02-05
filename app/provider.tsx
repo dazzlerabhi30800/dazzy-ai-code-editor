@@ -23,7 +23,6 @@ export default function ThemeProvider({
   const router = useRouter();
 
   const isAuthenticated = async () => {
-    if (typeof window === undefined) return;
     setShowLoader(true);
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     console.log(user);
@@ -40,9 +39,7 @@ export default function ThemeProvider({
     toast.info(`Welcome Back ${result.name}`);
   };
   React.useEffect(() => {
-    return () => {
-      isAuthenticated();
-    };
+    isAuthenticated();
   }, []);
   if (showLoader)
     return (
