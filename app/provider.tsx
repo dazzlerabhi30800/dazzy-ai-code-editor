@@ -23,8 +23,10 @@ export default function ThemeProvider({
   const router = useRouter();
 
   const isAuthenticated = async () => {
+    if (typeof window === undefined) return;
     setShowLoader(true);
     const user = JSON.parse(localStorage.getItem("user") || "{}");
+    console.log(user);
     if (!user?.email) {
       router.push("/");
       setShowLoader(false);
